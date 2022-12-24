@@ -1,0 +1,45 @@
+
+from flask import Blueprint, request
+books = Blueprint('books',__name__)
+from dbLayer import db, Books
+import json
+
+
+@books.route('/books', methods=['GET', 'POST', 'DELETE'])
+@books.route('/books/<id>', methods=['GET', 'POST', 'DELETE', 'PUT'])
+def crude_Books(id=-1):
+    if request.method == 'POST':
+        requestData = request.get_json()
+        # print(request_data['city'])
+        name = requestData['name']
+        author = requestData["author"]
+        yearPublished = requestData["yearPublished"]
+        type = requestData["type"]
+
+        newBook = Books(name, author, yearPublished, type)
+        db.session.add(newBook)
+        db.session.commit()
+        return {"message": "new book was added"}
+    if request.method == 'GET':
+        res = []
+        for book in Books.query.all():
+            res.append({"id": book.id, "name": book.name, "author": book.author,
+                       "yearPublished": book.year_published, "bookType": book.type})
+        return (json.dumps(res))
+        # return  (json.dumps(res))
+    # if request.method == 'DELETE': #not implemented yet
+    #     # print(Students.query.filter_by(id=id))
+    #     me=customers.query.get(id)
+    #     db.session.delete(me)
+    #     db.session.commit()
+    #     return {"msg":"row deleted"}
+    # if request.method == 'PUT': #not implemented yet
+    #     me=customers.query.get(id)
+    #     request_data = request.get_json()
+    #     # print(request_data['city'])
+    #     me.books = request_data['books']
+    #     me.loans = request_data['loans']
+    #     db.session.commit()
+    #     return {"msg":"row updated - TADA"}
+
+# model
