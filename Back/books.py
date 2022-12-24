@@ -24,7 +24,7 @@ def crude_Books(id=-1):
         res = []
         for book in Books.query.all():
             res.append({"id": book.id, "name": book.name, "author": book.author,
-                       "yearPublished": book.year_published, "bookType": book.type})
+                       "yearPublished": book.year_published, "type": book.type})
         return (json.dumps(res))
         # return  (json.dumps(res))
     # if request.method == 'DELETE': #not implemented yet
