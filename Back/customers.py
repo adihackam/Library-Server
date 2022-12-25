@@ -24,5 +24,13 @@ def crude_customers(id=-1):
                 {"id": customer.id, "name": customer.name, "city": customer.city, "age": customer.age})
         return (json.dumps(res))
 
+@customers.route('/customersSearch/<searchName>', methods=['GET'])
+def customersSearch(searchName):
+    res = []
+    searchName = f"%{searchName}%"
+    for customer in Customers.query.filter(Customers.name.ilike(searchName)).all():
+        res.append(
+            {"id": customer.id, "name": customer.name, "city": customer.city, "age": customer.age})
+    return (json.dumps(res))
 
 
