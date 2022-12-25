@@ -26,11 +26,23 @@ def crude_Books(id=-1):
             res.append({"id": book.id, "name": book.name, "author": book.author,
                        "yearPublished": book.year_published, "type": book.type})
         return (json.dumps(res))
-    if request.method == 'DELETE': #not implemented yet
+    if request.method == 'DELETE':
         me=Books.query.get(id)
         db.session.delete(me)
         db.session.commit()
         return {"msg":"row deleted"}
+
+
+@books.route('/bookSearch/<searchName>', methods=['GET'])
+def bookSearch(searchName):
+    res = []
+    searchName = f"%{searchName}%"
+    for book in Books.query.filter(Books.name.ilike(searchName)).all():
+        res.append(
+            {"id": book.id, "name": book.name, "author": book.author, "yearPublished": book.year_published, "type": book.type})
+    return (json.dumps(res))
+
+
     # if request.method == 'PUT': #not implemented yet
     #     me=customers.query.get(id)
     #     request_data = request.get_json()
