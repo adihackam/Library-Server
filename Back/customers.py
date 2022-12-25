@@ -24,6 +24,13 @@ def crude_customers(id=-1):
                 {"id": customer.id, "name": customer.name, "city": customer.city, "age": customer.age})
         return (json.dumps(res))
 
+    if request.method == 'DELETE':
+        me=Customers.query.get(id)
+        db.session.delete(me)
+        db.session.commit()
+        return {"message":"row deleted"}
+
+
 @customers.route('/customersSearch/<searchName>', methods=['GET'])
 def customersSearch(searchName):
     res = []

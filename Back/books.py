@@ -20,17 +20,19 @@ def crude_Books(id=-1):
         db.session.add(newBook)
         db.session.commit()
         return {"message": "new book was added"}
+
     if request.method == 'GET':
         res = []
         for book in Books.query.all():
             res.append({"id": book.id, "name": book.name, "author": book.author,
                        "yearPublished": book.year_published, "type": book.type})
         return (json.dumps(res))
+
     if request.method == 'DELETE':
         me=Books.query.get(id)
         db.session.delete(me)
         db.session.commit()
-        return {"msg":"row deleted"}
+        return {"message":"row deleted"}
 
 
 @books.route('/bookSearch/<searchName>', methods=['GET'])
