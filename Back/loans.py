@@ -39,3 +39,10 @@ def crude_loans(id=-1):
         db.session.commit()
         return {"message": "row deleted"}
 
+@loans.route('/expiredLoans', methods=['GET'])
+def expired_loans():
+    res = []
+    for loan in Loans.query.filter(Loans.return_date < date.today()):
+        res.append(
+            {"id": loan.id, "customerId": loan.customer_id, "bookId": loan.book_id, "loanDate": loan.loan_date.strftime('%d/%m/%Y'), "returnDate": loan.return_date.strftime('%d/%m/%Y'), })
+    return (json.dumps(res))
