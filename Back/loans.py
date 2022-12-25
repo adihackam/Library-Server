@@ -13,6 +13,13 @@ def crude_loans(id=-1):
         customer_id = request_data['customer_id']
         book_id = request_data["book_id"]
         book = Books.query.get(book_id)
+        if (book == None):
+            return {"message": f"Book id: {book_id} Not found"}
+
+        customer = Customers.query.get(customer_id)
+        if (customer == None):
+            return {"message": f"Customer id: {customer_id} Not found"}
+
         loan_date = date.today()
         daysToAdd = 0 
         if book.type == 1:
